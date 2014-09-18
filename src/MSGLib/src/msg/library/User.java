@@ -32,7 +32,6 @@ public class User
     }
 
     private String login;
-    private String userName;
     private String password;
     private String userId;
     private String state;
@@ -40,23 +39,21 @@ public class User
 
     public User (
                 String _user_id,
-                String _user_name,
                 String _login,
                 String _password,
                 String _state
-                )
+                ) 
     {
+ 
         this.setLogin( login);
         this.setPassword( password);
         this.setState( state);
         this.setUserId( userId);
-        this.setUserName( userName);
     }
 
     public String toString() {
-        return String.format(   "(%s, %s, %s, %s, %s)",
+        return String.format(   "(%s, %s, %s, %s)",
                                 this.getUserId(),
-                                this.getUserName(),
                                 this.getLogin(),
                                 this.getPassword(),
                                 this.getState()
@@ -68,15 +65,6 @@ public class User
 
     public User( String userId) {
         this.userId = userId;
-    }
-
-    public User( String userId, String state, String login, String password) {
-        this.userId = userId;
-        this.state = state;
-        this.login = login;
-        this.password = password;
-        
-        // this.frendList  = ; 
     }
 
     public List<User> getFrendList() {
@@ -91,14 +79,6 @@ public class User
 
     public void setLogin(String login) {
         this.login = login;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 
     public String getPassword() {

@@ -16,6 +16,5 @@ public class InitLib {
         MyDBConnector con = MyDBConnector.getInstance();
         // настройка базы данных
         con.connect( "jdbc:derby://localhost:1527/MSGDataBase", "org.apache.derby.jdbc.ClientDriver" ,"user1" ,"user1" );
-        
     }
 }

@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -11,69 +12,80 @@ import java.sql.*;
 /**
  * @author alex-user
  */
-public class MyDBConnector 
-{
-    private static MyDBConnector instance;
-    private Connection dbconnection;
 
-    private MyDBConnector ()
-    {
-    }
+public class MyDBConnector  
+{ 
+    private static MyDBConnector instance; 
+    private Connection dbconnection; 
 
-    public static MyDBConnector getInstance()
-    {
-        if (instance == null)
-        {
-            instance = new MyDBConnector();
-        }
-        return instance;
-    }
+    private MyDBConnector () { 
+    } 
 
-    public void connect( String url, String driver_name, String login, String password )
-    {
+    public static MyDBConnector getInstance() { 
+        if (instance == null) { 
+            instance = new MyDBConnector(); 
+        } 
+        return instance; 
+    } 
+
+    public void connect( String url, String driver_name, String login, String password ) { 
         try
         {
-            Class.forName( driver_name );
-            dbconnection = DriverManager.getConnection( url, login, password );
+            Class.forName( "org.apache.derby.jdbc.ClientDriver" ); 
+            dbconnection = DriverManager.getConnection( "jdbc:derby://localhost:1527/MSGDataBase", "user1", "user1" ); 
+            if( !dbconnection.isValid(5) ) 
+            { 
+                System.out.println("Error: connection to db not valid. "); 
+            } 
+//            Statement stmt = dbconnection.createStatement   (   
+//                ResultSet.TYPE_SCROLL_INSENSITIVE,  
+//                ResultSet.CONCUR_UPDATABLE  
+//                                                            );  
+            if( dbconnection.isValid( 5 ) == false ) 
+            { 
+                System.err.println( " Connection to db is not valid.  " ); 
+            } 
+        } catch( ClassNotFoundException ex ) { 
+            System.err.println("Error: error " + ex.toString() + " ."); 
+        } catch (SQLException ex) {
+            System.err.println("Error: error " + ex.toString() + " .");
         }
-        catch( SQLException se )
-        {
-            System.err.println( "Error: exception " + se.toString() + " ." );
-        }
-        catch( Exception e)
-        {
-            System.err.println(" Error: exception " + e.toString() + " .");
-        }
-    }
+    } 
 
-    public ResultSet exec( String str)
+    public ResultSet exec( String str) 
     {
-        try 
-        {
+        try {
             Statement stmt = null;
-            stmt = dbconnection.createStatement();
+            stmt = dbconnection.createStatement (   ResultSet.TYPE_SCROLL_INSENSITIVE,
+                                                    ResultSet.CONCUR_UPDATABLE
+                                                );
+
             String sql = str;
             ResultSet rs = stmt.executeQuery( sql);
+
+            if( rs == null ) {
+                System.out.println( "Error: ResultSet is null. " );
+            } else {
+                System.out.println( "IsFirst = " + rs.isFirst() + " ." );
+            }
+
+            if( rs.isFirst() == false) {
+                return null;
+            }
+
             return rs;
+        } catch( SQLException e) {
+            System.err.println( "Error: error " + e.toString() + " in |" + str + "| ." ); 
         }
-        catch( SQLException e)
-        {
-            System.err.println( "Error: error " + e.toString() + " ." );
-        }
-        return null;
+        return null; 
     }
 
-    public void disconnect()
-    {
+    public void disconnect() { 
         try
         {
-            dbconnection.close();
-        } catch( SQLException e)
-        {
-            System.err.append( "Error: while closing jdbc connection: " + e.toString()+" .");
+            dbconnection.close(); 
+        } catch( SQLException e) {
+            System.err.append( "Error: while closing jdbc connection: " + e.toString()+" ."); 
         }
-    }
-}
-
-
-
+    } 
+} 

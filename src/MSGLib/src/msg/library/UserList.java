@@ -19,8 +19,11 @@ public class UserList
 {
     public List<User> user_list;
 
-    public void addUser(User user)
-    {
+    public UserList(){
+        user_list = new ArrayList<User>();
+    }
+
+    public void addUser(User user) {
         user_list.add(user);
     }
 
@@ -33,4 +36,5 @@ public class UserList
     {
         return user_list.size();
     }
+
 }
